@@ -7,10 +7,18 @@ use Illuminate\Http\Request;
 
 class StatusesController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function store()
     {
-        Status::create([
+        $status=Status::create([
             'body'=>request('body'),
-            'user_id'=>auth()->id()]);
+            'user_id'=>auth()->id()
+        ]);
+
+        return response()->json(['body'=>$status->body]);
     }
 }

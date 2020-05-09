@@ -10,6 +10,16 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 class CreateStatusTest extends TestCase
 {
     use RefreshDatabase;
+
+    /**
+     * @test
+     */
+    public function guests_users_can_not_create_statuses()
+    {
+        $response = $this->post(route('statuses.store'), ['body'=>'Mi primer estado']);
+
+        $response->assertRedirect('login');
+    }
     /**
      * @test
      */
@@ -21,7 +31,11 @@ class CreateStatusTest extends TestCase
         $this->actingAs($user);
 
         // 2. When => Cuando hace un post request a status
-        $this->post(route('statuses.store'), ['body'=>'Mi primer estado']);
+        $response = $this->post(route('statuses.store'), ['body'=>'Mi primer estado']);
+
+        $response->assertJson([
+            'body'=>'Mi primer estado',
+        ]);
 
         // 3. Then => Entonces veo un nuevo estado en la base de datos
         $this->assertDatabaseHas('statuses', [
