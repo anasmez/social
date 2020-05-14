@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\User;
+use Symfony\Component\Mime\Header\IdentificationHeader;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -41,5 +42,36 @@ class CreateStatusTest extends TestCase
         $this->assertDatabaseHas('statuses', [
             'user_id'=>$user->id,
             'body'=>'Mi primer estado']);
+    }
+
+    /**
+     * @test
+     */
+    public function a_status_requires_body()
+    {
+        $user=factory(User::class)->create();
+        $this->actingAs($user);
+
+        $response=$this->postJson(route('statuses.store'), ['body'=>'']);
+        $response->assertStatus(422);
+
+        $response->assertJsonStructure([
+            'message', 'errors'=>['body']
+        ]);
+    }
+    /**
+     * @test
+     */
+    public function a_status_body_requires_a_minimum_length()
+    {
+        $user=factory(User::class)->create();
+        $this->actingAs($user);
+
+        $response=$this->postJson(route('statuses.store'), ['body'=>'asdf']);
+        $response->assertStatus(422);
+
+        $response->assertJsonStructure([
+            'message', 'errors'=>['body']
+        ]);
     }
 }
