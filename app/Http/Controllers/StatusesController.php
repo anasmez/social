@@ -12,6 +12,10 @@ class StatusesController extends Controller
         $this->middleware('auth');
     }
 
+    public function index(){
+        return Status::orderBy('id', 'DESC')->paginate();
+    }
+
     public function store()
     {
         request()->validate(['body'=>'required|min:5']);
