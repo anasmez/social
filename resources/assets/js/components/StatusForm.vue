@@ -1,13 +1,21 @@
 <template>
     <div>
-        <form @submit.prevent="enviar">
+        <form @submit.prevent="enviar" v-if="isAuthenticated">
             <div class="card-body border-0">
-                <textarea v-model="body" class="form-control border-0 bg-light" name="body" placeholder="¿Qué estás pensando, Anas?"></textarea>
+                <textarea v-model="body"
+                          class="form-control border-0 bg-light"
+                          name="body"
+                          :placeholder="`¿Qué estás pensando, ${currentUser.name}?`">
+
+                </textarea>
             </div>
             <div class="card-footer">
                 <button class="btn btn-primary" id="create-status">Publicar estado</button>
             </div>
         </form>
+        <d v-else class="card-body">
+            <a href="/login">Debes loguearte</a>
+        </d>
     </div>
 </template>
 

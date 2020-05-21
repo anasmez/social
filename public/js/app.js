@@ -14872,13 +14872,17 @@ module.exports = function normalizeComponent (
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(15);
-module.exports = __webpack_require__(53);
+module.exports = __webpack_require__(54);
 
 
 /***/ }),
 /* 15 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_auth__ = __webpack_require__(53);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_auth___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__mixins_auth__);
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -14898,6 +14902,10 @@ window.Vue = __webpack_require__(38);
 window.EventBus = new Vue();
 Vue.component('status-form', __webpack_require__(42));
 Vue.component('statuses-list', __webpack_require__(48));
+
+
+
+Vue.mixin(__WEBPACK_IMPORTED_MODULE_0__mixins_auth___default.a);
 
 var app = new Vue({
   el: '#app'
@@ -49700,7 +49708,7 @@ exports = module.exports = __webpack_require__(11)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -49757,6 +49765,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -49787,46 +49803,58 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c(
-      "form",
-      {
-        on: {
-          submit: function($event) {
-            $event.preventDefault()
-            return _vm.enviar($event)
-          }
-        }
-      },
-      [
-        _c("div", { staticClass: "card-body border-0" }, [
-          _c("textarea", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.body,
-                expression: "body"
-              }
-            ],
-            staticClass: "form-control border-0 bg-light",
-            attrs: { name: "body", placeholder: "¿Qué estás pensando, Anas?" },
-            domProps: { value: _vm.body },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
+  return _c(
+    "div",
+    [
+      _vm.isAuthenticated
+        ? _c(
+            "form",
+            {
+              on: {
+                submit: function($event) {
+                  $event.preventDefault()
+                  return _vm.enviar($event)
                 }
-                _vm.body = $event.target.value
               }
-            }
-          })
-        ]),
-        _vm._v(" "),
-        _vm._m(0)
-      ]
-    )
-  ])
+            },
+            [
+              _c("div", { staticClass: "card-body border-0" }, [
+                _c("textarea", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.body,
+                      expression: "body"
+                    }
+                  ],
+                  staticClass: "form-control border-0 bg-light",
+                  attrs: {
+                    name: "body",
+                    placeholder:
+                      "¿Qué estás pensando, " + _vm.currentUser.name + "?"
+                  },
+                  domProps: { value: _vm.body },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.body = $event.target.value
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _vm._m(0)
+            ]
+          )
+        : _c("d", { staticClass: "card-body" }, [
+            _c("a", { attrs: { href: "/login" } }, [_vm._v("Debes loguearte")])
+          ])
+    ],
+    1
+  )
 }
 var staticRenderFns = [
   function() {
@@ -50044,6 +50072,26 @@ if (false) {
 
 /***/ }),
 /* 53 */
+/***/ (function(module, exports) {
+
+var user = document.head.querySelector('meta[name="user"]');
+
+module.exports = {
+    computed: {
+        currentUser: function currentUser() {
+            return JSON.parse(user.content);
+        },
+        isAuthenticated: function isAuthenticated() {
+            return !!user.content;
+        },
+        guest: function guest() {
+            return !this.isAuthenticated;
+        }
+    }
+};
+
+/***/ }),
+/* 54 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
