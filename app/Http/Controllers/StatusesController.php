@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\StatusResource;
 use App\Models\Status;
 use Illuminate\Http\Request;
 
@@ -12,8 +13,11 @@ class StatusesController extends Controller
         $this->middleware('auth');
     }
 
-    public function index(){
-        return Status::latest()->paginate();
+    public function index()
+    {
+        return StatusResource::collection(
+            Status::latest()->paginate()
+        );
     }
 
     public function store()

@@ -49937,7 +49937,7 @@ exports = module.exports = __webpack_require__(11)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -49982,6 +49982,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         });
         EventBus.$on('status-created', function (status) {
             _this.statuses.unshift(status);
+            console.log(status);
         });
     }
 });
@@ -49999,7 +50000,26 @@ var render = function() {
     _vm._l(_vm.statuses, function(status) {
       return _c("div", { staticClass: "card border-0 mb-3 shadow-sm" }, [
         _c("div", { staticClass: "card-body d-flex flex-column" }, [
-          _vm._m(0, true),
+          _c("div", { staticClass: "d-flex align-items-center mb-3" }, [
+            _c("img", {
+              staticClass: "rounded-circle mr-3 shadow-sm",
+              attrs: {
+                width: "40px",
+                src: "https://aprendible.com/images/default-avatar.jpg"
+              }
+            }),
+            _vm._v(" "),
+            _c("div", [
+              _c("h5", {
+                staticClass: "mb-1",
+                domProps: { textContent: _vm._s(status.user_name) }
+              }),
+              _vm._v(" "),
+              _c("div", { staticClass: "small text-muted" }, [
+                _vm._v("Hace un minuto")
+              ])
+            ])
+          ]),
           _vm._v(" "),
           _c("p", {
             staticClass: "card-text text-secondary",
@@ -50011,30 +50031,7 @@ var render = function() {
     0
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "d-flex align-items-center mb-3" }, [
-      _c("img", {
-        staticClass: "rounded-circle mr-3 shadow-sm",
-        attrs: {
-          width: "40px",
-          src: "https://aprendible.com/images/default-avatar.jpg"
-        }
-      }),
-      _vm._v(" "),
-      _c("div", [
-        _c("h5", { staticClass: "mb-1" }, [_vm._v("Anas M.")]),
-        _vm._v(" "),
-        _c("div", { staticClass: "small text-muted" }, [
-          _vm._v("Hace un minuto")
-        ])
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {

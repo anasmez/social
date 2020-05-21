@@ -11,8 +11,10 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 class UsersCanSeeAllStatusesTest extends DuskTestCase
 {
     use DatabaseMigrations;
+
     /**
      * @test
+     * @throws \Throwable
      */
     public function users_can_see_all_statuses_on_the_homepage()
     {
@@ -24,7 +26,8 @@ class UsersCanSeeAllStatusesTest extends DuskTestCase
                     ->waitForText($statuses->first()->body);
 
             foreach ($statuses as $status){
-                $browser->assertSee($status->body);
+                $browser->assertSee($status->body)
+                        ->assertSee($status->user->name);
             }
         });
     }
