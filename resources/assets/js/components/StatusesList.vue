@@ -6,7 +6,7 @@
                     <img class="rounded-circle mr-3 shadow-sm" width="40px" src="https://aprendible.com/images/default-avatar.jpg">
                     <div>
                         <h5 class="mb-1" v-text="status.user_name"></h5>
-                        <div class="small text-muted">Hace un minuto</div>
+                        <div class="small text-muted" v-text="status.ago"></div>
                     </div>
                 </div>
                 <p class="card-text text-secondary" v-text="status.body"></p>

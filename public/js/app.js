@@ -49770,7 +49770,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this = this;
 
             axios.post('/statuses', { body: this.body }).then(function (res) {
-                EventBus.$emit('status-created', res.data);
+                EventBus.$emit('status-created', res.data.data); // ['data'=> ['body'=>'el body']]
                 _this.body = '';
             }).catch(function (err) {
                 console.log(err.response.data);
@@ -50015,9 +50015,10 @@ var render = function() {
                 domProps: { textContent: _vm._s(status.user_name) }
               }),
               _vm._v(" "),
-              _c("div", { staticClass: "small text-muted" }, [
-                _vm._v("Hace un minuto")
-              ])
+              _c("div", {
+                staticClass: "small text-muted",
+                domProps: { textContent: _vm._s(status.ago) }
+              })
             ])
           ]),
           _vm._v(" "),

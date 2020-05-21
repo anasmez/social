@@ -35,7 +35,7 @@ class CreateStatusTest extends TestCase
         $response = $this->post(route('statuses.store'), ['body'=>'Mi primer estado']);
 
         $response->assertJson([
-            'body'=>'Mi primer estado',
+            'data'=>['body'=>'Mi primer estado'],
         ]);
 
         // 3. Then => Entonces veo un nuevo estado en la base de datos
