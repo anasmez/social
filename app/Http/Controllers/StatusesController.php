@@ -13,7 +13,7 @@ class StatusesController extends Controller
     }
 
     public function index(){
-        return Status::orderBy('id', 'DESC')->paginate();
+        return Status::latest()->paginate();
     }
 
     public function store()
