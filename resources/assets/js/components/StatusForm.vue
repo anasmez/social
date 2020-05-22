@@ -17,9 +17,9 @@
                 </button>
             </div>
         </form>
-        <d v-else class="card-body">
+        <div v-else class="card-body">
             <a href="/login">Debes loguearte</a>
-        </d>
+        </div>
     </div>
 </template>
 

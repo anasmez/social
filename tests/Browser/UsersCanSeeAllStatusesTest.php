@@ -19,10 +19,9 @@ class UsersCanSeeAllStatusesTest extends DuskTestCase
     public function users_can_see_all_statuses_on_the_homepage()
     {
         $statuses = factory(Status::class, 3)->create();
-        $user=factory(User::class)->create();
-        $this->browse(function (Browser $browser) use ($statuses, $user) {
-            $browser->loginAs($user)
-                    ->visit('/')
+
+        $this->browse(function (Browser $browser) use ($statuses) {
+            $browser->visit('/')
                     ->waitForText($statuses->first()->body);
 
             foreach ($statuses as $status){
