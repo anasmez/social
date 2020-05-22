@@ -10,6 +10,8 @@
                     </div>
                 </div>
                 <p class="card-text text-secondary" v-text="status.body"></p>
+                <button v-if="status.is_liked">TE GUSTA</button>
+                <button v-else dusk="like-btn" @click="like(status)">ME GUSTA</button>
             </div>
         </div>
     </div>
@@ -34,6 +36,14 @@
                this.statuses.unshift(status);
                console.log(status);
             });
+        },
+        methods: {
+            like(status){
+                axios.post(`/statuses/${status.id}/likes`)
+                .then(respuesta=>{
+                    status.is_liked=true;
+                })
+            }
         }
     }
 </script>
