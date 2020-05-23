@@ -17,10 +17,10 @@ class CreateCommentsTest extends TestCase
      */
     function guest_users_cannot_create_comments()
     {
-        $status=factory(Status::class)->create();
-        $comment=['body'=>'Mi primer comentario'];
+        $status = factory(Status::class)->create();
+        $comment = ['body' => 'Mi primer comentario'];
 
-        $response=$this->postJson(route('statuses.comments.store', $status), $comment);
+        $response = $this->postJson(route('statuses.comments.store', $status), $comment);
 
         $response->assertStatus(401);
     }
@@ -30,18 +30,21 @@ class CreateCommentsTest extends TestCase
      */
     function authenticated_users_can_comment_statuses()
     {
-        $this->withoutExceptionHandling();
-        $status=factory(Status::class)->create();
-        $user=factory(User::class)->create();
-        $comment=['body'=>'Mi primer comentario'];
+        $status = factory(Status::class)->create();
+        $user = factory(User::class)->create();
+        $comment = ['body' => 'Mi primer comentario'];
 
-        $this->actingAs($user)
+        $response = $this->actingAs($user)
             ->postJson(route('statuses.comments.store', $status), $comment);
 
+        $response->assertJson([
+            'data'=>['body'=>$comment['body']]
+        ]);
+
         $this->assertDatabaseHas('comments', [
-            'user_id'=>$user->id,
-            'status_id'=>$status->id,
-            'body'=>$comment['body']
+            'user_id' => $user->id,
+            'status_id' => $status->id,
+            'body' => $comment['body']
         ]);
     }
 }
