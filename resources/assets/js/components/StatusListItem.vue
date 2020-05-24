@@ -13,19 +13,26 @@
         </div>
         <div class="card-footer p-2 d-flex justify-content-between align-items-center">
             <like-btn
-                :status="status"
+                    :status="status"
             >
             </like-btn>
             <div class="text-secondary mr-2">
                 <i class="far fa-thumbs-up"></i>
                 <span dusk="likes-count">{{status.likes_count}}</span>
             </div>
+            <form @submit.prevent="addComment">
+                <textarea name="comment" v-model="newComment"></textarea>
+                <button dusk="comment-btn">Enviar</button>
+            </form>
+
+            <div v-for="comment in comments">{{comment.body}}</div>
         </div>
     </div>
 </template>
 
 <script>
     import LikeBtn from './LikeBtn'
+
     export default {
         props: {
             status: {
@@ -33,7 +40,21 @@
                 required: true
             },
         },
-        components:{
+        data() {
+            return {
+                newComment: '',
+                comments: []
+            }
+        },
+        methods: {
+            addComment() {
+                axios.post(`/statuses/${this.status.id}/comments`, {body: this.newComment}).then(respuesta => {
+                    this.newComment='';
+                    this.comments.push(respuesta.data.data);
+                })
+            }
+        },
+        components: {
             LikeBtn
         }
     }
