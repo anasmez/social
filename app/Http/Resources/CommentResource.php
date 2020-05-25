@@ -9,13 +9,15 @@ class CommentResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return array
      */
     public function toArray($request)
     {
         return [
-          'body'=>$this->body
+            'body' => $this->body,
+            'user_name' => $this->user->name,
+            'user_avatar' => 'https://aprendible.com/images/default-avatar.jpg'
         ];
     }
 }
