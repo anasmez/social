@@ -50162,7 +50162,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             newComment: '',
-            comments: []
+            comments: this.status.comments
         };
     },
 
@@ -50472,7 +50472,7 @@ var render = function() {
           ]
         ),
         _vm._v(" "),
-        _vm._l(_vm.comments, function(comment) {
+        _vm._l(_vm.status.comments, function(comment) {
           return _c("div", [_vm._v(_vm._s(comment.body))])
         })
       ],
