@@ -17,7 +17,7 @@ class CommentResource extends JsonResource
         return [
             'body' => $this->body,
             'user_name' => $this->user->name,
-            'user_avatar' => 'https://aprendible.com/images/default-avatar.jpg'
+        'user_avatar' =>'https://aprendible.com/images/default-avatar.jpg'
         ];
     }
 }
