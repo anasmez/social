@@ -38,13 +38,31 @@ class CreateCommentsTest extends TestCase
             ->postJson(route('statuses.comments.store', $status), $comment);
 
         $response->assertJson([
-            'data'=>['body'=>$comment['body']]
+            'data' => ['body' => $comment['body']]
         ]);
 
         $this->assertDatabaseHas('comments', [
             'user_id' => $user->id,
             'status_id' => $status->id,
             'body' => $comment['body']
+        ]);
+    }
+
+    /**
+     * @test
+     */
+    public function a_comment_requires_body()
+    {
+        $status = factory(Status::class)->create();
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        $response = $this->postJson(route('statuses.comments.store', $status), ['body' => '']);
+
+        $response->assertStatus(422);
+
+        $response->assertJsonStructure([
+            'message', 'errors' => ['body']
         ]);
     }
 }
