@@ -13,22 +13,28 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 class StatusTest extends TestCase
 {
     use RefreshDatabase;
+
     /**
      * @test
      */
     function a_status_belongs_to_a_user()
     {
-        $status=factory(Status::class)->create();
+        $status = factory(Status::class)->create();
 
         $this->assertInstanceOf(User::class, $status->user);
     }
+
     /**
      * @test
      */
-    function a_status_has_many_likes()
+    function a_status_morph_many_likes()
     {
-        $status=factory(Status::class)->create();
-        factory(Like::class)->create(['status_id'=>$status->id]);
+        $status = factory(Status::class)->create();
+
+        factory(Like::class)->create([
+            'likeable_id' => $status->id,          // 1
+            'likeable_type' => get_class($status) // App\\Models\\Status
+        ]);
 
         $this->assertInstanceOf(Like::class, $status->likes->first());
     }
@@ -38,8 +44,8 @@ class StatusTest extends TestCase
      */
     function a_status_has_many_comments()
     {
-        $status=factory(Status::class)->create();
-        factory(Comment::class)->create(['status_id'=>$status->id]);
+        $status = factory(Status::class)->create();
+        factory(Comment::class)->create(['status_id' => $status->id]);
 
         $this->assertInstanceOf(Comment::class, $status->comments->first());
     }
@@ -49,9 +55,9 @@ class StatusTest extends TestCase
      */
     function a_status_can_be_liked_and_unliked()
     {
-        $status=factory(Status::class)->create();
+        $status = factory(Status::class)->create();
 
-        $user=factory(User::class)->create();
+        $user = factory(User::class)->create();
         $this->actingAs($user);
 
         $status->like();
@@ -62,14 +68,15 @@ class StatusTest extends TestCase
 
         $this->assertEquals(0, $status->fresh()->likes->count());
     }
+
     /**
      * @test
      */
     function a_status_can_be_liked_once()
     {
-        $status=factory(Status::class)->create();
+        $status = factory(Status::class)->create();
 
-        $user=factory(User::class)->create();
+        $user = factory(User::class)->create();
         $this->actingAs($user);
 
         $status->like();
@@ -80,12 +87,13 @@ class StatusTest extends TestCase
 
         $this->assertEquals(1, $status->fresh()->likes->count());
     }
+
     /**
      * @test
      */
     function a_status_knows_if_it_has_been_liked()
     {
-        $status=factory(Status::class)->create();
+        $status = factory(Status::class)->create();
 
         $this->assertFalse($status->isLiked());
 
@@ -101,12 +109,14 @@ class StatusTest extends TestCase
      */
     function a_status_knows_how_many_likes_it_has()
     {
-        $status=factory(Status::class)->create();
+        $status = factory(Status::class)->create();
 
         $this->assertEquals(0, $status->likesCount());
 
-        factory(Like::class, 2)->create(['status_id'=>$status->id]);
-
+        factory(Like::class, 2)->create([
+            'likeable_id' => $status->id,          // 1
+            'likeable_type' => get_class($status) // App\\Models\\Status
+        ]);
         $this->assertEquals(2, $status->likesCount());
     }
 
