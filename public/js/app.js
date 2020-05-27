@@ -50105,7 +50105,7 @@ exports = module.exports = __webpack_require__(2)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -50178,6 +50178,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 
 
@@ -50188,6 +50191,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             required: true
         }
     },
+    components: { LikeBtn: __WEBPACK_IMPORTED_MODULE_0__LikeBtn___default.a },
     data: function data() {
         return {
             newComment: '',
@@ -50205,10 +50209,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }).catch(function (err) {
                 console.log(err.response.data);
             });
+        },
+        likeComment: function likeComment(comment) {
+            axios.post('/comments/' + comment.id + '/likes').then(function (respuesta) {
+                comment.likes_count++;
+                comment.is_liked = true;
+            }).catch(function (error) {
+                console.log(error.response.data);
+            });
+        },
+        unlikeComment: function unlikeComment(comment) {
+            axios.delete('/comments/' + comment.id + '/likes').then(function (respuesta) {
+                comment.likes_count--;
+                comment.is_liked = false;
+            }).catch(function (error) {
+                console.log(error.response.data);
+            });
         }
-    },
-    components: {
-        LikeBtn: __WEBPACK_IMPORTED_MODULE_0__LikeBtn___default.a
     }
 });
 
@@ -50496,7 +50513,37 @@ var render = function() {
                     "\n                "
                 )
               ])
-            ])
+            ]),
+            _vm._v(" "),
+            _c("span", { attrs: { dusk: "comment-likes-count" } }, [
+              _vm._v(_vm._s(comment.likes_count))
+            ]),
+            _vm._v(" "),
+            comment.is_liked
+              ? _c(
+                  "button",
+                  {
+                    attrs: { dusk: "comment-unlike-btn" },
+                    on: {
+                      click: function($event) {
+                        return _vm.unlikeComment(comment)
+                      }
+                    }
+                  },
+                  [_vm._v("TE GUSTA")]
+                )
+              : _c(
+                  "button",
+                  {
+                    attrs: { dusk: "comment-like-btn" },
+                    on: {
+                      click: function($event) {
+                        return _vm.likeComment(comment)
+                      }
+                    }
+                  },
+                  [_vm._v("ME GUSTA")]
+                )
           ])
         }),
         _vm._v(" "),
