@@ -25,24 +25,10 @@
                     .then(respuesta => {
                         this.model.is_liked = !this.model.is_liked;
                         if (method === 'post') {
-                            this.model.likes_count++
+                            this.model.likes_count++;
                         } else {
                             this.model.likes_count--;
                         }
-                    })
-            },
-            like() {
-                axios.post(this.url)
-                    .then(respuesta => {
-                        this.model.is_liked = true;
-                        this.model.likes_count++;
-                    })
-            },
-            unlike() {
-                axios.delete(this.url)
-                    .then(respuesta => {
-                        this.model.is_liked = false;
-                        this.model.likes_count--;
                     })
             }
         },
@@ -66,6 +52,10 @@
     }
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+    .comments-like-btn{
+        font-size: 0.8em;
+        padding-left: 0;
+        i {display: none}
+    }
 </style>
