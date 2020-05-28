@@ -50105,7 +50105,7 @@ exports = module.exports = __webpack_require__(2)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -50118,6 +50118,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__LikeBtn__ = __webpack_require__(56);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__LikeBtn___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__LikeBtn__);
+//
 //
 //
 //
@@ -50422,14 +50423,18 @@ var render = function() {
       _c("div", { staticClass: "d-flex align-items-center mb-3" }, [
         _c("img", {
           staticClass: "rounded-circle mr-3 shadow-sm",
-          attrs: { width: "40px", src: _vm.status.user_avatar }
+          attrs: {
+            width: "40px",
+            src: _vm.status.user.avatar,
+            alt: _vm.status.user.name
+          }
         }),
         _vm._v(" "),
         _c("div", [
           _c("h5", { staticClass: "mb-1" }, [
             _c("a", {
-              attrs: { href: _vm.status.user_link },
-              domProps: { textContent: _vm._s(_vm.status.user_name) }
+              attrs: { href: _vm.status.user.link },
+              domProps: { textContent: _vm._s(_vm.status.user.name) }
             })
           ]),
           _vm._v(" "),
@@ -50484,8 +50489,8 @@ var render = function() {
                 attrs: {
                   height: "34px",
                   width: "34px",
-                  src: comment.user_avatar,
-                  alt: comment.user_name
+                  src: comment.user.avatar,
+                  alt: comment.user.name
                 }
               }),
               _vm._v(" "),
@@ -50495,8 +50500,8 @@ var render = function() {
                 [
                   _c("div", { staticClass: "card border-0 shadow-sm" }, [
                     _c("div", { staticClass: "card-body p-2 text-secondary" }, [
-                      _c("a", { attrs: { href: comment.user_link } }, [
-                        _c("strong", [_vm._v(_vm._s(comment.user_name))])
+                      _c("a", { attrs: { href: comment.user.link } }, [
+                        _c("strong", [_vm._v(_vm._s(comment.user.name))])
                       ]),
                       _vm._v(
                         "\n                            " +

@@ -2,10 +2,13 @@
 
 namespace Tests\Unit\Http\Resources;
 
-use App\Http\Resources\StatusResource;
 use App\Models\Comment;
 use App\Models\Status;
+use App\User;
 use Tests\TestCase;
+use App\Http\Resources\UserResource;
+use App\Http\Resources\StatusResource;
+use App\Http\Resources\CommentResource;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -20,7 +23,7 @@ class StatusResourceTest extends TestCase
     {
 
         $status = factory(Status::class)->create();
-        factory(Comment::class)->create(['status_id'=>$status->id]);
+        factory(Comment::class)->create(['status_id' => $status->id]);
 
         $statusResource = StatusResource::make($status)->resolve();
 
@@ -31,22 +34,6 @@ class StatusResourceTest extends TestCase
         $this->assertEquals(
             $status->body,
             $statusResource['body']
-        );
-        $this->assertEquals(
-            $status->user->name,
-            $statusResource['user_name']
-        );
-        $this->assertEquals(
-            $status->user->avatar(),
-            $statusResource['user_avatar']
-        );
-        $this->assertEquals(
-            $status->user->link(),
-            $statusResource['user_link']
-        );
-        $this->assertEquals(
-            'https://aprendible.com/images/default-avatar.jpg',
-            $statusResource['user_avatar']
         );
         $this->assertEquals(
             $status->created_at->diffForHumans(),
@@ -61,12 +48,20 @@ class StatusResourceTest extends TestCase
             $statusResource['likes_count']
         );
         $this->assertEquals(
-            'App\Http\Resources\CommentResource',
+            CommentResource::class,
             $statusResource['comments']->collects
         );
         $this->assertInstanceOf(
             Comment::class,
             $statusResource['comments']->collection->first()->resource
+        );
+        $this->assertInstanceOf(
+            UserResource::class,
+            $statusResource['user']
+        );
+        $this->assertInstanceOf(
+            User::class,
+            $statusResource['user']->resource
         );
     }
 }
