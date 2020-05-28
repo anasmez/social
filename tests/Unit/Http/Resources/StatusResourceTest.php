@@ -37,6 +37,14 @@ class StatusResourceTest extends TestCase
             $statusResource['user_name']
         );
         $this->assertEquals(
+            $status->user->avatar(),
+            $statusResource['user_avatar']
+        );
+        $this->assertEquals(
+            $status->user->link(),
+            $statusResource['user_link']
+        );
+        $this->assertEquals(
             'https://aprendible.com/images/default-avatar.jpg',
             $statusResource['user_avatar']
         );
