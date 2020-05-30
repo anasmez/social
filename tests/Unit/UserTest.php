@@ -41,5 +41,9 @@ class UserTest extends TestCase
             'https://aprendible.com/images/default-avatar.jpg',
             $user->avatar()
         );
+        $this->assertEquals(
+            'https://aprendible.com/images/default-avatar.jpg',
+            $user->avatar
+        );
     }
 }
