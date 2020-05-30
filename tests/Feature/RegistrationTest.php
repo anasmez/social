@@ -16,16 +16,9 @@ class RegistrationTest extends TestCase
     public function users_can_register()
     {
         $this->withoutExceptionHandling();
-        $userData = [
-            'name' => 'AnasMeziani',
-            'first_name' => 'Anas',
-            'last_name' => 'Meziani',
-            'email' => 'anas@email.com',
-            'password' => 'secret',
-            'password_confirmation' => 'secret',
-        ];
+        $this->get(route('register'))->assertSuccessful();
 
-        $response = $this->post(route('register'), $userData);
+        $response = $this->post(route('register'), $this->userValidData());
 
         $response->assertRedirect('/');
 
