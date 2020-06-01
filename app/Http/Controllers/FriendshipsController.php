@@ -13,7 +13,16 @@ class FriendshipsController extends Controller
         Friendship::create([
             'sender_id' => auth()->id(),
             'recipient_id' => $recipient->id,
-            'accepted'=>false
+            'status'=>'pending'
         ]);
     }
+
+    public function destroy(User $recipient)
+    {
+        Friendship::where([
+            'sender_id' => auth()->id(),
+            'recipient_id' => $recipient->id,
+        ])->delete();
+    }
+
 }
