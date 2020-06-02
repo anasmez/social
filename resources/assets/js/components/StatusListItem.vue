@@ -40,8 +40,7 @@
                             </div>
                         </div>
                         <small class="badge badge-primary badge-pill float-right py-1 px-2 mt-1"
-                               dusk="comment-likes-count"
-                               id="likes-counter">
+                               dusk="comment-likes-count">
                             <i class="fa fa-thumbs-up"></i>
                             {{comment.likes_count}}
                         </small>
