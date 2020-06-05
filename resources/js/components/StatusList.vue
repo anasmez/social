@@ -1,10 +1,12 @@
 <template>
     <div @click="redirectIfGuest">
-        <status-list-item
-                v-for="status in statuses"
-                :status="status"
-                :key="status.id"
-        ></status-list-item>
+        <transition-group name="status-list-transition" tag="div">
+            <status-list-item
+                    v-for="status in statuses"
+                    :status="status"
+                    :key="status.id"
+            ></status-list-item>
+        </transition-group>
     </div>
 </template>
 
@@ -15,7 +17,7 @@
         components: {
             StatusListItem
         },
-        props:{
+        props: {
             url: String
         },
         data() {
@@ -35,12 +37,12 @@
                 this.statuses.unshift(status);
             });
 
-            Echo.channel('statuses').listen('StatusCreated', e=>{
+            Echo.channel('statuses').listen('StatusCreated', e => {
                 this.statuses.unshift(e.status);
             });
         },
-        computed:{
-            getUrl(){
+        computed: {
+            getUrl() {
                 return this.url || '/statuses';
             }
         }
@@ -48,5 +50,7 @@
 </script>
 
 <style scoped>
-
+    .status-list-transition-move{
+        transition: all 0.8s;
+    }
 </style>
