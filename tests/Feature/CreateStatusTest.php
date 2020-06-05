@@ -6,6 +6,7 @@ use App\Events\StatusCreated;
 use App\Http\Resources\StatusResource;
 use App\Models\Status;
 use App\User;
+use Broadcast;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
@@ -36,13 +37,6 @@ class CreateStatusTest extends TestCase
 
         $response = $this->post(route('statuses.store'), ['body' => 'Mi primer estado']);
 
-        Event::assertDispatched(StatusCreated::class, function ($e){
-            return $e->status->id===Status::first()->id
-                && $e->status instanceof StatusResource
-                && $e->status->resource instanceof Status
-                && $e instanceof ShouldBroadcast;
-        });
-
         $response->assertJson([
             'data' => ['body' => 'Mi primer estado'],
         ]);
@@ -50,6 +44,30 @@ class CreateStatusTest extends TestCase
         $this->assertDatabaseHas('statuses', [
             'user_id' => $user->id,
             'body' => 'Mi primer estado']);
+    }
+
+    /** @test */
+    public function an_event_is_fired_when_a_status_is_created()
+    {
+        Event::fake([StatusCreated::class]);
+        Broadcast::shouldReceive('socket')->andReturn('socket-id');
+
+        $user = factory(User::class)->create();
+
+        $this->actingAs($user)->post(route('statuses.store'), ['body' => 'Mi primer estado']);
+
+        Event::assertDispatched(StatusCreated::class, function ($statusCreatedEvent) {
+            $this->assertInstanceOf(StatusResource::class, $statusCreatedEvent->status);
+            $this->assertInstanceOf(Status::class, $statusCreatedEvent->status->resource);
+            $this->assertInstanceOf(ShouldBroadcast::class, $statusCreatedEvent);
+            $this->assertEquals(Status::first()->id, $statusCreatedEvent->status->id);
+            $this->assertEquals(
+                'socket-id',
+                $statusCreatedEvent->socket,
+                'The event ' . get_class($statusCreatedEvent) . ' must call the method "dontBroadcastToCurrentUser" in the constructor.'
+            );
+            return true;
+        });
     }
 
     /**
