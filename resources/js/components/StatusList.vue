@@ -34,6 +34,10 @@
             EventBus.$on('status-created', status => {
                 this.statuses.unshift(status);
             });
+
+            Echo.channel('statuses').listen('StatusCreated', e=>{
+                this.statuses.unshift(e.status);
+            });
         },
         computed:{
             getUrl(){
