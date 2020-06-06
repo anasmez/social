@@ -1,6 +1,6 @@
 <template>
     <div @click="redirectIfGuest">
-        <transition-group name="status-list-transition" tag="div">
+        <transition-group name="status-list-transition">
             <status-list-item
                     v-for="status in statuses"
                     :status="status"

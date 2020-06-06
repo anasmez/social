@@ -56142,7 +56142,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -56252,14 +56252,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             comments: this.status.comments
         };
     },
+    mounted: function mounted() {
+        var _this = this;
+
+        Echo.channel('statuses.' + this.status.id + '.comments').listen('CommentCreated', function (e) {
+            _this.comments.push(e.comment);
+        });
+    },
 
     methods: {
         addComment: function addComment() {
-            var _this = this;
+            var _this2 = this;
 
             axios.post('/statuses/' + this.status.id + '/comments', { body: this.newComment }).then(function (respuesta) {
-                _this.newComment = '';
-                _this.comments.push(respuesta.data.data);
+                _this2.newComment = '';
+                _this2.comments.push(respuesta.data.data);
             }).catch(function (err) {
                 console.log(err.response.data);
             });
@@ -56677,7 +56684,7 @@ var render = function() {
     [
       _c(
         "transition-group",
-        { attrs: { name: "status-list-transition", tag: "div" } },
+        { attrs: { name: "status-list-transition" } },
         _vm._l(_vm.statuses, function(status) {
           return _c("status-list-item", {
             key: status.id,

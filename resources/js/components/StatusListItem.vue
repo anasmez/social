@@ -4,7 +4,7 @@
             <div class="d-flex align-items-center mb-3">
                 <img class="rounded-circle mr-3 shadow-sm" width="40px"
                      :src="status.user.avatar"
-                    :alt="status.user.name">
+                     :alt="status.user.name">
                 <div>
                     <h5 class="mb-1">
                         <a :href="status.user.link" v-text="status.user.name"></a>
@@ -94,6 +94,11 @@
                 newComment: '',
                 comments: this.status.comments
             }
+        },
+        mounted() {
+            Echo.channel(`statuses.${this.status.id}.comments`).listen('CommentCreated', e => {
+                this.comments.push(e.comment);
+            });
         },
         methods: {
             addComment() {
