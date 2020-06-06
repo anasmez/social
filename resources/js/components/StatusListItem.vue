@@ -27,34 +27,11 @@
         </div>
 
         <div class="card-footer">
+            <comment-list
+                    :comments="status.comments"
+                    :status-id="status.id"
+            ></comment-list>
 
-            <div v-for="comment in status.comments" class="mb-3">
-                <div class="d-flex">
-                    <img class="rounded shadow-sm mr-2" height="34px" width="34px" :src="comment.user.avatar"
-                         :alt="comment.user.name">
-                    <div class="flex-grow-1">
-                        <div class="card border-0 shadow-sm">
-                            <div class="card-body p-2 text-secondary">
-                                <a :href="comment.user.link"><strong>{{comment.user.name}}</strong></a>
-                                {{comment.body}}
-                            </div>
-                        </div>
-                        <small class="badge badge-primary badge-pill float-right py-1 px-2 mt-1"
-                               dusk="comment-likes-count">
-                            <i class="fa fa-thumbs-up"></i>
-                            {{comment.likes_count}}
-                        </small>
-
-                        <like-btn
-                                dusk="comment-like-btn"
-                                :url="`/comments/${comment.id}/likes`"
-                                :model="comment"
-                                class="comments-like-btn"
-                        ></like-btn>
-                    </div>
-                </div>
-
-            </div>
             <form @submit.prevent="addComment" v-if="isAuthenticated">
                 <div class="d-flex align-items-center">
                     <img class="rounded shadow-sm float-left mr-2" width="34px"
@@ -80,6 +57,7 @@
 
 <script>
     import LikeBtn from './LikeBtn'
+    import CommentList from "./CommentList";
 
     export default {
         props: {
@@ -88,23 +66,17 @@
                 required: true
             },
         },
-        components: {LikeBtn},
+        components: {LikeBtn, CommentList},
         data() {
             return {
-                newComment: '',
-                comments: this.status.comments
+                newComment: ''
             }
-        },
-        mounted() {
-            Echo.channel(`statuses.${this.status.id}.comments`).listen('CommentCreated', e => {
-                this.comments.push(e.comment);
-            });
         },
         methods: {
             addComment() {
                 axios.post(`/statuses/${this.status.id}/comments`, {body: this.newComment}).then(respuesta => {
                     this.newComment = '';
-                    this.comments.push(respuesta.data.data);
+                    EventBus.$emit(`statuses.${this.status.id}.comments`, respuesta.data.data);
                 })
                     .catch(err => {
                         console.log(err.response.data)
