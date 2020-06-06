@@ -54,7 +54,7 @@ class CreateStatusTest extends TestCase
 
         $user = factory(User::class)->create();
 
-        $this->actingAs($user)->post(route('statuses.store'), ['body' => 'Mi primer estado']);
+        $this->actingAs($user)->postJson(route('statuses.store'), ['body' => 'Mi primer estado']);
 
         Event::assertDispatched(StatusCreated::class, function ($statusCreatedEvent) {
             $this->assertInstanceOf(StatusResource::class, $statusCreatedEvent->status);
