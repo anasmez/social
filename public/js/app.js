@@ -56193,7 +56193,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -56262,7 +56262,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             required: true
         }
     },
-    components: { LikeBtn: __WEBPACK_IMPORTED_MODULE_0__LikeBtn___default.a, CommentList: __WEBPACK_IMPORTED_MODULE_1__CommentList___default.a, CommentForm: __WEBPACK_IMPORTED_MODULE_2__CommentForm___default.a }
+    components: { LikeBtn: __WEBPACK_IMPORTED_MODULE_0__LikeBtn___default.a, CommentList: __WEBPACK_IMPORTED_MODULE_1__CommentList___default.a, CommentForm: __WEBPACK_IMPORTED_MODULE_2__CommentForm___default.a },
+    mounted: function mounted() {
+        var _this = this;
+
+        Echo.channel("statuses." + this.status.id + ".likes").listen('ModelLiked', function (e) {
+            _this.status.likes_count++;
+        });
+    }
 });
 
 /***/ }),
