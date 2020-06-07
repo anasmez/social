@@ -18,7 +18,6 @@ abstract class TestCase extends BaseTestCase
         );
     }
 
-    /** @test */
     protected function assertDontBroadCastToCurrentUser($event, $socketId = 'socket-id')
     {
         $this->assertInstanceOf(ShouldBroadcast::class, $event);
@@ -30,7 +29,7 @@ abstract class TestCase extends BaseTestCase
         );
     }
 
-    /** @test
+    /**
      * @param $channelType
      * @param $event
      */
@@ -44,7 +43,7 @@ abstract class TestCase extends BaseTestCase
         $this->assertEquals($types[$channelType], get_class($event->broadcastOn()));
     }
 
-    /** @test
+    /**
      * @param $channelName
      * @param $event
      */
