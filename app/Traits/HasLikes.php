@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use App\Events\ModelLiked;
+use App\Events\ModelUnliked;
 use App\Models\Like;
 use function GuzzleHttp\Psr7\str;
 
@@ -28,6 +29,8 @@ trait HasLikes
         $this->likes()->where([
             'user_id' => auth()->id()
         ])->delete();
+
+        ModelUnliked::dispatch($this);
     }
 
     public function isLiked()

@@ -57,7 +57,7 @@ class UsersCanLikeStatusesTest extends DuskTestCase
      * @test
      * @throws \Throwable
      */
-    public function users_can_see_likes_in_real_time()
+    public function users_can_see_likes_and_unlikes_in_real_time()
     {
         $user = factory(User::class)->create();
         $status = factory(Status::class)->create();
@@ -73,6 +73,11 @@ class UsersCanLikeStatusesTest extends DuskTestCase
                 ->waitForText('TE GUSTA');
 
             $browser1->assertSeeIn('@likes-count', 1);
+
+            $browser2->press('@like-btn')
+                ->waitForText('ME GUSTA');
+
+            $browser1->assertSeeIn('@likes-count', 0);
         });
     }
 }
