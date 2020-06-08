@@ -17,6 +17,13 @@ class StatusesController extends Controller
         );
     }
 
+    public function show(Status $status)
+    {
+        return view('statuses.show', [
+            'status' => StatusResource::make($status),
+        ]);
+    }
+
     public function store(Request $request)
     {
         $validStatus = $request->validate(['body' => 'required|min:5']);

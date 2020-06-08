@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Comment;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -28,6 +29,8 @@ class CanLikeCommentsTest extends TestCase
      */
     function an_authenticated_user_can_like_and_unlike_comments()
     {
+        Notification::fake();
+
         $this->withoutExceptionHandling();
 
         $user = factory(User::class)->create();
