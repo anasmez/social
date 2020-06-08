@@ -15,12 +15,18 @@ class ModelLiked implements ShouldBroadcast
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $model;
+    public $likeSender;
 
-    /** @param $model */
-    public function __construct($model)
+    /**
+     * @param $model
+     * @param $likeSender
+     */
+    public function __construct($model, $likeSender)
     {
         $this->dontBroadcastToCurrentUser();
+
         $this->model = $model;
+        $this->likeSender = $likeSender;
     }
 
     /**
