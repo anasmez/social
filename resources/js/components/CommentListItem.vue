@@ -32,7 +32,7 @@
         components: {LikeBtn},
         props: {
             comment: {
-                type: Array,
+                type: Object,
                 required: true
             },
         },

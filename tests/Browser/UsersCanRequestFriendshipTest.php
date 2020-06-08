@@ -120,6 +120,7 @@ class UsersCanRequestFriendshipTest extends DuskTestCase
                 ->waitForText('son amigos')
                 ->assertSee('son amigos')
                 ->visit(route('accept-friendships.index'))
+                ->pause(1000)
                 ->assertSee('son amigos');
         });
     }
