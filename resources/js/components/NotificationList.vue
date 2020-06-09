@@ -8,7 +8,7 @@
            data-toggle="dropdown"
            aria-haspopup="true"
            aria-expanded="false">
-            Notificaciones
+            <slot></slot>
         </a>
         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownNotifications">
             <a v-for="notification in notifications"

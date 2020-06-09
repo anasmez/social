@@ -14953,6 +14953,7 @@ window.Vue = __webpack_require__(41);
 window.EventBus = new Vue();
 Vue.component('status-form', __webpack_require__(45));
 Vue.component('status-list', __webpack_require__(51));
+Vue.component('status-list-item', __webpack_require__(55));
 Vue.component('friendship-btn', __webpack_require__(80));
 Vue.component('accept-friendship-btn', __webpack_require__(85));
 Vue.component('notification-list', __webpack_require__(90));
@@ -57733,7 +57734,8 @@ var render = function() {
           "aria-expanded": "false"
         }
       },
-      [_vm._v("\n        Notificaciones\n    ")]
+      [_vm._t("default")],
+      2
     ),
     _vm._v(" "),
     _c(
