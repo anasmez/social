@@ -57661,7 +57661,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -57696,6 +57696,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 
 
@@ -57703,7 +57706,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     components: { NotificationListItem: __WEBPACK_IMPORTED_MODULE_0__NotificationListItem___default.a },
     data: function data() {
         return {
-            notifications: []
+            notifications: [],
+            count: ''
         };
     },
     created: function created() {
@@ -57711,9 +57715,27 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         axios.get('/notifications').then(function (res) {
             _this.notifications = res.data;
+            _this.unreadNotifications();
         }).catch(function (err) {
             console.log(err.data);
         });
+        EventBus.$on('notification-read', function () {
+            if (_this.count === 1) {
+                return _this.count = '';
+            }
+            _this.count--;
+        });
+        EventBus.$on('notification-unread', function () {
+            _this.count++;
+        });
+    },
+
+    methods: {
+        unreadNotifications: function unreadNotifications() {
+            this.count = this.notifications.filter(function (notification) {
+                return notification.read_at === null;
+            }).length || '';
+        }
     }
 });
 
@@ -57779,13 +57801,13 @@ var content = __webpack_require__(96);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("7bacb160", content, false, {});
+var update = __webpack_require__(2)("56c2bc8a", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-537495c7\",\"scoped\":true,\"hasInlineConfig\":true}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./NotificationListItem.vue", function() {
-     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-537495c7\",\"scoped\":true,\"hasInlineConfig\":true}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./NotificationListItem.vue");
+   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-537495c7\",\"scoped\":true,\"hasInlineConfig\":true}!../../../node_modules/sass-loader/lib/loader.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./NotificationListItem.vue", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-537495c7\",\"scoped\":true,\"hasInlineConfig\":true}!../../../node_modules/sass-loader/lib/loader.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./NotificationListItem.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -57803,7 +57825,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\nbutton > span[data-v-537495c7] {\n  display: none;\n}\nbutton i:hover + span[data-v-537495c7] {\n  display: inline;\n}\n", ""]);
 
 // exports
 
@@ -57814,6 +57836,14 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -57850,15 +57880,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         markAsRead: function markAsRead() {
             var _this = this;
 
-            axios.post("/read-notifications/" + this.notification.id).then(function (res) {
+            axios.post('/read-notifications/' + this.notification.id).then(function (res) {
                 _this.isRead = true;
+                EventBus.$emit('notification-read');
             });
         },
         markAsUnread: function markAsUnread() {
             var _this2 = this;
 
-            axios.delete("/read-notifications/" + this.notification.id).then(function (res) {
+            axios.delete('/read-notifications/' + this.notification.id).then(function (res) {
                 _this2.isRead = false;
+                EventBus.$emit('notification-unread');
             });
         }
     }
@@ -57872,44 +57904,75 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c(
-      "a",
-      {
-        staticClass: "dropdown-item",
-        attrs: { dusk: _vm.notification.id, href: _vm.notification.data.link }
-      },
-      [_vm._v(_vm._s(_vm.notification.data.message))]
-    ),
-    _vm._v(" "),
-    _vm.isRead
-      ? _c(
-          "button",
-          {
-            attrs: { dusk: "mark-as-unread-" + _vm.notification.id },
-            on: {
-              click: function($event) {
-                $event.stopPropagation()
-                return _vm.markAsUnread($event)
+  return _c(
+    "div",
+    {
+      staticClass: "dropdown-item d-flex align-items-center",
+      class: _vm.isRead ? "" : "bg-light"
+    },
+    [
+      _c(
+        "a",
+        {
+          staticClass: "dropdown-item",
+          attrs: { dusk: _vm.notification.id, href: _vm.notification.data.link }
+        },
+        [_vm._v(_vm._s(_vm.notification.data.message))]
+      ),
+      _vm._v(" "),
+      _vm.isRead
+        ? _c(
+            "button",
+            {
+              staticClass: "btn btn-link mr-2",
+              attrs: { dusk: "mark-as-unread-" + _vm.notification.id },
+              on: {
+                click: function($event) {
+                  $event.stopPropagation()
+                  return _vm.markAsUnread($event)
+                }
               }
-            }
-          },
-          [_vm._v("Marcar como NO leída\n    ")]
-        )
-      : _c(
-          "button",
-          {
-            attrs: { dusk: "mark-as-read-" + _vm.notification.id },
-            on: {
-              click: function($event) {
-                $event.stopPropagation()
-                return _vm.markAsRead($event)
+            },
+            [
+              _c("i", { staticClass: "far fa-circle" }),
+              _vm._v(" "),
+              _c(
+                "span",
+                {
+                  staticClass:
+                    "position-absolute bg-dark text-white ml-2 py-1 px-2 rounded"
+                },
+                [_vm._v("Marcar como NO leída")]
+              )
+            ]
+          )
+        : _c(
+            "button",
+            {
+              staticClass: "btn btn-link mr-2",
+              attrs: { dusk: "mark-as-read-" + _vm.notification.id },
+              on: {
+                click: function($event) {
+                  $event.stopPropagation()
+                  return _vm.markAsRead($event)
+                }
               }
-            }
-          },
-          [_vm._v("Marcar como leída\n    ")]
-        )
-  ])
+            },
+            [
+              _c("i", { staticClass: "fas fa-circle" }),
+              _vm._v(" "),
+              _c(
+                "span",
+                {
+                  staticClass:
+                    "position-absolute bg-dark text-white ml-2 py-1 px-2 rounded"
+                },
+                [_vm._v("Marcar como leída")]
+              )
+            ]
+          )
+    ]
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -57934,6 +57997,7 @@ var render = function() {
       "a",
       {
         staticClass: "nav-link dropdown-toggle",
+        class: _vm.count ? "text-primary font-weight-bold" : "",
         attrs: {
           href: "#",
           dusk: "notifications",
@@ -57944,7 +58008,7 @@ var render = function() {
           "aria-expanded": "false"
         }
       },
-      [_vm._t("default")],
+      [_vm._t("default"), _vm._v("\n        " + _vm._s(_vm.count) + "\n    ")],
       2
     ),
     _vm._v(" "),
@@ -57954,13 +58018,19 @@ var render = function() {
         staticClass: "dropdown-menu dropdown-menu-right",
         attrs: { "aria-labelledby": "dropdownNotifications" }
       },
-      _vm._l(_vm.notifications, function(notification) {
-        return _c("notification-list-item", {
-          key: notification.id,
-          attrs: { notification: notification }
+      [
+        _c("div", { staticClass: "dropdown-header text-center" }, [
+          _vm._v("Notificaciones")
+        ]),
+        _vm._v(" "),
+        _vm._l(_vm.notifications, function(notification) {
+          return _c("notification-list-item", {
+            key: notification.id,
+            attrs: { notification: notification }
+          })
         })
-      }),
-      1
+      ],
+      2
     )
   ])
 }
