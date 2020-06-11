@@ -7,6 +7,7 @@ use App\Models\Status;
 use App\Notifications\NewLikeNotification;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
@@ -40,6 +41,7 @@ class SendNewLikeNotificationTest extends TestCase
                 $this->assertContains('broadcast', $channels);
                 $this->assertTrue($notification->model->is($status));
                 $this->assertTrue($notification->likeSender->is($likeSender));
+                $this->assertInstanceOf(BroadcastMessage::class, $notification->toBroadcast($status->user));
                 return true;
             });
 
