@@ -2118,6 +2118,23 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     var _this = this;
 
+    //          Channel: private-App.User.3
+    //          Event: Illuminate\Notifications\Events\BroadcastNotificationCreated
+    if (this.isAuthenticated) {
+      Echo["private"]("App.User.".concat(this.currentUser.id)).notification(function (notification) {
+        _this.count++;
+        console.log(notification);
+
+        _this.notifications.push({
+          id: notification.id,
+          data: {
+            link: notification['0']['link'],
+            message: notification['0']['message']
+          }
+        });
+      });
+    }
+
     axios.get('/notifications').then(function (res) {
       _this.notifications = res.data;
 
@@ -2209,6 +2226,8 @@ __webpack_require__.r(__webpack_exports__);
       axios["delete"]("/read-notifications/".concat(this.notification.id)).then(function (res) {
         _this2.isRead = false;
         EventBus.$emit('notification-unread');
+      })["catch"](function (err) {
+        console.log(err.data);
       });
     }
   }

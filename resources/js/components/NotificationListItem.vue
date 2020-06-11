@@ -51,6 +51,9 @@
                         this.isRead = false;
                         EventBus.$emit('notification-unread');
                     })
+                .catch(err=>{
+                    console.log(err.data);
+                })
             }
         }
     }

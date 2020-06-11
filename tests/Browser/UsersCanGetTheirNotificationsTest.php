@@ -52,7 +52,7 @@ class UsersCanGetTheirNotificationsTest extends DuskTestCase
     public function users_can_see_their_notifications_in_real_time(){
         $user1 = factory(User::class)->create();
         $user2 =factory(User::class)->create();
-        $status = factory(Status::class)->create();
+        $status = factory(Status::class)->create(['user_id'=>$user1->id]);
 
         $this->browse(function (Browser $browser1, Browser $browser2) use ($user1, $user2) {
             $browser1->loginAs($user1)

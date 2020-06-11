@@ -20,6 +20,10 @@ class UsersTableSeeder extends Seeder
             'email'=>'anas@email.com',
             'name'=>'anaso'
         ]);
+        factory(User::class)->create([
+            'email'=>'otro@email.com',
+            'name'=>'otro'
+        ]);
         factory(Status::class, 10)->create();
     }
 }

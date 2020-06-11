@@ -37,6 +37,22 @@
             }
         },
         created() {
+//          Channel: private-App.User.3
+//          Event: Illuminate\Notifications\Events\BroadcastNotificationCreated
+            if (this.isAuthenticated) {
+                Echo.private(`App.User.${this.currentUser.id}`)
+                    .notification(notification => {
+                        this.count++;
+                        console.log(notification);
+                        this.notifications.push({
+                            id: notification.id,
+                            data: {
+                                link: notification['0']['link'],
+                                message: notification['0']['message']
+                            }
+                        })
+                    })
+            }
             axios.get('/notifications')
                 .then(res => {
                     this.notifications = res.data;
