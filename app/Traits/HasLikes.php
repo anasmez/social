@@ -5,7 +5,7 @@ namespace App\Traits;
 use App\Events\ModelLiked;
 use App\Events\ModelUnliked;
 use App\Models\Like;
-use function GuzzleHttp\Psr7\str;
+use Illuminate\Support\Str;
 
 trait HasLikes
 {
@@ -18,7 +18,7 @@ trait HasLikes
     public function like()
     {
         $this->likes()->firstOrCreate([
-            'user_id' => auth()->id()
+            'user_id' => auth()->id(),
         ]);
 
         ModelLiked::dispatch($this, auth()->user());
@@ -27,7 +27,7 @@ trait HasLikes
     public function unlike()
     {
         $this->likes()->where([
-            'user_id' => auth()->id()
+            'user_id' => auth()->id(),
         ])->delete();
 
         ModelUnliked::dispatch($this);
@@ -45,6 +45,8 @@ trait HasLikes
 
     public function eventChannelName()
     {
-        return strtolower(str_plural(class_basename($this))).'.'.$this->id.'.likes';
+        return strtolower(Str::plural(class_basename($this))).'.'.$this->id.'.likes';
     }
+
+    abstract public function path();
 }

@@ -2,17 +2,7 @@
 
 namespace Tests\Unit\Traits;
 
-use App\Events\ModelLiked;
-use App\Events\ModelUnliked;
-use App\Models\Like;
-use App\Traits\HasLikes;
-use App\User;
-use Event;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Broadcast;
-use Schema;
-use Tests\TestCase;
+use App\Events\ModelLiked;use App\Events\ModelUnliked;use App\Models\Like;use App\Traits\HasLikes;use App\User;use Event;use Illuminate\Database\Eloquent\Model;use Illuminate\Foundation\Testing\RefreshDatabase;use Illuminate\Support\Facades\Broadcast;use Schema;use Tests\TestCase;
 
 class HasLikesTest extends TestCase
 {
@@ -180,4 +170,8 @@ class ModelWithLike extends Model
     public $timestamps = false;
 
     protected $fillable = ['id'];
+
+    public function path(){
+     // TODO: Implement path() method.
+    }
 }
