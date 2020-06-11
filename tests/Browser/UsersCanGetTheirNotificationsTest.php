@@ -47,4 +47,27 @@ class UsersCanGetTheirNotificationsTest extends DuskTestCase
                 ->assertMissing("@mark-as-unread-{$notification->id}");
         });
     }
+
+    /** @test */
+    public function users_can_see_their_notifications_in_real_time(){
+        $user1 = factory(User::class)->create();
+        $user2 =factory(User::class)->create();
+        $status = factory(Status::class)->create();
+
+        $this->browse(function (Browser $browser1, Browser $browser2) use ($user1, $user2) {
+            $browser1->loginAs($user1)
+            ->visit('/')
+            ->resize(1024,768);
+
+            $browser2->loginAs($user2)
+            ->visit('/')
+            ->waitFor('@like-btn')
+            ->press('@like-btn')
+            ->pause(1000)
+            ;
+
+            $browser1->assertSeeIn('@notifications-count',1);
+        });
+
+    }
 }

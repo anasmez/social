@@ -10,7 +10,9 @@
            aria-haspopup="true"
            aria-expanded="false">
             <slot></slot>
-            {{count}}
+            <span dusk="notifications-count">
+                {{count}}
+            </span>
         </a>
         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownNotifications">
             <div class="dropdown-header text-center">Notificaciones</div>
