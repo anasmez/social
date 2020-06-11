@@ -3,6 +3,7 @@
 namespace Tests\Unit\Models;
 
 use App\Models\Comment;
+use App\Models\Status;
 use App\Traits\HasLikes;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -12,14 +13,20 @@ class CommentTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * @test
-     */
+    /** @test */
     public function a_comment_belongs_to_a_user()
     {
         $comment = factory(Comment::class)->create();
 
         $this->assertInstanceOf(User::class, $comment->user);
+    }
+
+    /** @test */
+    public function a_comment_belongs_to_a_status()
+    {
+        $comment = factory(Comment::class)->create();
+
+        $this->assertInstanceOf(Status::class, $comment->status);
     }
 
     /**
