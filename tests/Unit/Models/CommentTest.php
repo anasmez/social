@@ -5,8 +5,8 @@ namespace Tests\Unit\Models;
 use App\Models\Comment;
 use App\Traits\HasLikes;
 use App\User;
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class CommentTest extends TestCase
 {
@@ -28,5 +28,16 @@ class CommentTest extends TestCase
     public function a_comment_model_must_use_the_trait_has_likes()
     {
         $this->assertClassUsesTrait(HasLikes::class, Comment::class);
+    }
+
+    /** @test */
+    public function a_comment__must_have_a_path()
+    {
+        $comment = factory(Comment::class)->create();
+        $this->assertEquals(
+            route('statuses.show', $comment->status_id).'#comment-'.$comment->id,
+            $comment->path()
+        );
+        // statuses/1#comment-1
     }
 }

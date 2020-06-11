@@ -43,7 +43,6 @@
                 Echo.private(`App.User.${this.currentUser.id}`)
                     .notification(notification => {
                         this.count++;
-                        console.log(notification);
                         this.notifications.push({
                             id: notification.id,
                             data: {

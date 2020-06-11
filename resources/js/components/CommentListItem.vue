@@ -1,5 +1,5 @@
 <template>
-    <div class="d-flex">
+    <div :class="highlight" :id="`comment-${comment.id}`" class="d-flex">
         <img class="rounded shadow-sm mr-2" height="34px" width="34px" :src="comment.user.avatar"
              :alt="comment.user.name">
         <div class="flex-grow-1">
@@ -46,10 +46,21 @@
             .listen('ModelUnliked', comment=>{
                 this.comment.likes_count--;
             });
+        },
+        computed:{
+            highlight(){
+                if (window.location.hash===`#comment-${this.comment.id}`){
+                    return 'highlight';
+                }
+            }
         }
     }
 </script>
 
 <style scoped>
-
+    .highlight{
+        background-color: #ececec;
+        padding: 10px;
+        border-left: 4px solid #ee3344;
+    }
 </style>
