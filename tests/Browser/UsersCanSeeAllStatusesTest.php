@@ -3,10 +3,9 @@
 namespace Tests\Browser;
 
 use App\Models\Status;
-use App\User;
-use Tests\DuskTestCase;
-use Laravel\Dusk\Browser;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Laravel\Dusk\Browser;
+use Tests\DuskTestCase;
 
 class UsersCanSeeAllStatusesTest extends DuskTestCase
 {
@@ -22,13 +21,13 @@ class UsersCanSeeAllStatusesTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($statuses) {
             $browser->visit('/')
-                    ->waitForText($statuses->first()->body, 7);
+                ->waitForText($statuses->first()->body, 7);
 
-            foreach ($statuses as $status){
-                $browser->assertSee($status->body)
-                        ->assertSee($status->user->name)
-                        ->assertSee($status->created_at->diffForHumans())
-                    ;
+            foreach ($statuses as $status) {
+                $browser->maximize()
+                    ->assertSee($status->body)
+                    ->assertSee($status->user->name)
+                    ->assertSee($status->created_at->diffForHumans());
             }
         });
     }
