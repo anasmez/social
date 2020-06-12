@@ -11,12 +11,17 @@
                         <div class="card-body">
                             <div class="form-group">
                                 <label>Email:</label>
-                                <input class="form-control border-0" type="email" name="email"
-                                       placeholder="Tu correo electrónico">
+                                <input class="form-control border-0"
+                                       type="email"
+                                       name="email"
+                                       placeholder="Tu correo electrónico"
+                                       value="{{ old('email') }}">
                             </div>
                             <div class="form-group">
                                 <label>Contraseña:</label>
-                                <input class="form-control border-0" type="password" name="password"
+                                <input class="form-control border-0"
+                                       type="password"
+                                       name="password"
                                        placeholder="Tu contraseña">
                             </div>
                             <button class="btn btn-primary btn-block" id="login-btn">Login</button>

@@ -3,7 +3,6 @@
 @section('content')
     <div class="container">
         @foreach($friendshipRequests as $friendshipRequest)
-            {{$friendshipRequest->sender->name}}
             <accept-friendship-btn
                     dusk="accept-friendship"
                     :sender="{{$friendshipRequest->sender}}"
