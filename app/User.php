@@ -45,10 +45,20 @@ class User extends Authenticatable
         return $this->hasMany(Status::class);
     }
 
+    public function friendshipRequestsReceived()
+    {
+        return $this->hasMany(Friendship::class, 'recipient_id');
+    }
+
+    public function friendshipRequestsSent()
+    {
+        return $this->hasMany(Friendship::class, 'sender_id');
+    }
+
     public function sendFriendRequestTo($recipient)
     {
-        return Friendship::firstOrCreate([
-            'sender_id' => $this->id,
+        return $this->friendshipRequestsSent()
+            ->firstOrCreate([
             'recipient_id' => $recipient->id,
             'status' => 'pending',
         ]);
@@ -56,12 +66,25 @@ class User extends Authenticatable
 
     public function acceptFriendRequestFrom($sender)
     {
-        $friendship = Friendship::where([
+        $friendship = $this->friendshipRequestsReceived()
+            ->where([
             'sender_id' => $sender->id,
             'recipient_id' => $this->id,
         ])->first();
 
         $friendship->update(['status' => 'accepted']);
+        return $friendship;
+    }
+
+    public function denyFriendRequestFrom($sender)
+    {
+        $friendship =$this->friendshipRequestsReceived()
+            ->where([
+            'sender_id' => $sender->id,
+            'recipient_id' => $this->id,
+        ])->first();
+
+        $friendship->update(['status' => 'denied']);
         return $friendship;
     }
 }

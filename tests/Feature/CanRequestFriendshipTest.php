@@ -30,13 +30,13 @@ class CanRequestFriendshipTest extends TestCase
 
         $response = $this->actingAs($sender)->postJson(route('friendships.store', $recipient));
         $response->assertJson([
-            'friendship_status' => 'pending'
+            'friendship_status' => 'pending',
         ]);
 
         $this->assertDatabaseHas('friendships', [
             'sender_id' => $sender->id,
             'recipient_id' => $recipient->id,
-            'status' => 'pending'
+            'status' => 'pending',
         ]);
 
         $this->actingAs($sender)->postJson(route('friendships.store', $recipient));
@@ -53,7 +53,7 @@ class CanRequestFriendshipTest extends TestCase
         $this->assertDatabaseMissing('friendships', [
             'sender_id' => $sender->id,
             'recipient_id' => $sender->id,
-            'status' => 'pending'
+            'status' => 'pending',
         ]);
     }
 
@@ -68,19 +68,19 @@ class CanRequestFriendshipTest extends TestCase
         Friendship::create([
             'sender_id' => $sender->id,
             'recipient_id' => $recipient->id,
-            'status' => 'pending'
+            'status' => 'pending',
         ]);
 
         $response = $this->actingAs($recipient)->postJson(route('accept-friendships.store', $sender));
 
         $response->assertJson([
-            'friendship_status' => 'accepted'
+            'friendship_status' => 'accepted',
         ]);
 
         $this->assertDatabaseHas('friendships', [
             'sender_id' => $sender->id,
             'recipient_id' => $recipient->id,
-            'status' => 'accepted'
+            'status' => 'accepted',
         ]);
     }
 
@@ -108,7 +108,7 @@ class CanRequestFriendshipTest extends TestCase
 
         $response = $this->actingAs($sender)->deleteJson(route('friendships.destroy', $recipient));
         $response->assertJson([
-            'friendship_status' => 'deleted'
+            'friendship_status' => 'deleted',
         ]);
         $this->assertDatabaseMissing('friendships', [
             'sender_id' => $sender->id,
@@ -126,17 +126,17 @@ class CanRequestFriendshipTest extends TestCase
         Friendship::create([
             'sender_id' => $sender->id,
             'recipient_id' => $recipient->id,
-            'status' => 'denied'
+            'status' => 'denied',
         ]);
 
         $response = $this->actingAs($sender)->deleteJson(route('friendships.destroy', $recipient));
         $response->assertJson([
-            'friendship_status' => 'denied'
+            'friendship_status' => 'denied',
         ]);
         $this->assertDatabaseHas('friendships', [
             'sender_id' => $sender->id,
             'recipient_id' => $recipient->id,
-            'status' => 'denied'
+            'status' => 'denied',
         ]);
     }
 
@@ -152,17 +152,17 @@ class CanRequestFriendshipTest extends TestCase
         Friendship::create([
             'sender_id' => $sender->id,
             'recipient_id' => $recipient->id,
-            'status' => 'denied'
+            'status' => 'denied',
         ]);
 
         $response = $this->actingAs($recipient)->deleteJson(route('friendships.destroy', $sender));
         $response->assertJson([
-            'friendship_status' => 'deleted'
+            'friendship_status' => 'deleted',
         ]);
         $this->assertDatabaseMissing('friendships', [
             'sender_id' => $sender->id,
             'recipient_id' => $recipient->id,
-            'status' => 'denied'
+            'status' => 'denied',
         ]);
     }
 
@@ -180,7 +180,7 @@ class CanRequestFriendshipTest extends TestCase
 
         $response = $this->actingAs($recipient)->deleteJson(route('friendships.destroy', $sender));
         $response->assertJson([
-            'friendship_status' => 'deleted'
+            'friendship_status' => 'deleted',
         ]);
         $this->assertDatabaseMissing('friendships', [
             'sender_id' => $sender->id,
@@ -209,20 +209,36 @@ class CanRequestFriendshipTest extends TestCase
         Friendship::create([
             'sender_id' => $sender->id,
             'recipient_id' => $recipient->id,
-            'status' => 'pending'
+            'status' => 'pending',
         ]);
 
         $response = $this->actingAs($recipient)->deleteJson(route('accept-friendships.destroy', $sender));
 
         $response->assertJson([
-            'friendship_status' => 'denied'
+            'friendship_status' => 'denied',
         ]);
 
         $this->assertDatabaseHas('friendships', [
             'sender_id' => $sender->id,
             'recipient_id' => $recipient->id,
-            'status' => 'denied'
+            'status' => 'denied',
         ]);
+    }
+
+    /** @test */
+    public function can_get_all_friendship_requests_received()
+    {
+        $sender = factory(User::class)->create();
+        $recipient = factory(User::class)->create();
+
+        $sender->sendFriendRequestTo($recipient);
+        factory(Friendship::class, 2)->create();
+
+        $this->actingAs($recipient);
+
+        $response = $this->get(route('accept-friendships.index'));
+
+        $this->assertCount(1, $response->viewData('friendshipRequests'));
     }
 
     /** @test */
