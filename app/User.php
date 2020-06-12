@@ -59,18 +59,18 @@ class User extends Authenticatable
     {
         return $this->friendshipRequestsSent()
             ->firstOrCreate([
-            'recipient_id' => $recipient->id,
-            'status' => 'pending',
-        ]);
+                'recipient_id' => $recipient->id,
+                'status' => 'pending',
+            ]);
     }
 
     public function acceptFriendRequestFrom($sender)
     {
         $friendship = $this->friendshipRequestsReceived()
             ->where([
-            'sender_id' => $sender->id,
-            'recipient_id' => $this->id,
-        ])->first();
+                'sender_id' => $sender->id,
+                'recipient_id' => $this->id,
+            ])->first();
 
         $friendship->update(['status' => 'accepted']);
         return $friendship;
@@ -78,13 +78,25 @@ class User extends Authenticatable
 
     public function denyFriendRequestFrom($sender)
     {
-        $friendship =$this->friendshipRequestsReceived()
+        $friendship = $this->friendshipRequestsReceived()
             ->where([
-            'sender_id' => $sender->id,
-            'recipient_id' => $this->id,
-        ])->first();
+                'sender_id' => $sender->id,
+                'recipient_id' => $this->id,
+            ])->first();
 
         $friendship->update(['status' => 'denied']);
         return $friendship;
+    }
+
+    public function friends()
+    {
+        $senderFriends = $this->belongsToMany(User::class, 'friendships', 'sender_id', 'recipient_id')
+            ->wherePivot('status', 'accepted')
+            ->get();
+        $recipientsFriends = $this->belongsToMany(User::class, 'friendships', 'recipient_id', 'sender_id')
+            ->wherePivot('status', 'accepted')
+            ->get();
+
+        return $senderFriends->merge($recipientsFriends);
     }
 }
