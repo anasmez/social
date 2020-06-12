@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\User;
 use Hash;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -57,7 +58,7 @@ class RegistrationTest extends TestCase
     {
         $this->post(
             route('register'),
-            $this->userValidData(['name' => str_random(61)])
+            $this->userValidData(['name' => Str::random(61)])
         )->assertSessionHasErrors('name');
     }
 
@@ -84,7 +85,7 @@ class RegistrationTest extends TestCase
     {
         $this->post(
             route('register'),
-            $this->userValidData(['first_name' => str_random(61)])
+            $this->userValidData(['first_name' => Str::random(61)])
         )->assertSessionHasErrors('first_name');
     }
 
@@ -111,7 +112,7 @@ class RegistrationTest extends TestCase
     {
         $this->post(
             route('register'),
-            $this->userValidData(['last_name' => str_random(61)])
+            $this->userValidData(['last_name' => Str::random(61)])
         )->assertSessionHasErrors('last_name');
     }
 
@@ -158,7 +159,7 @@ class RegistrationTest extends TestCase
     {
         $this->post(
             route('register'),
-            $this->userValidData(['password' => str_random(5)])
+            $this->userValidData(['password' => Str::random(5)])
         )->assertSessionHasErrors('password');
     }
 
