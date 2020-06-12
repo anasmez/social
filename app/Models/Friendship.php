@@ -5,6 +5,9 @@ namespace App\Models;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @method static firstOrCreate(array $array)
+ */
 class Friendship extends Model
 {
     protected $guarded = [];

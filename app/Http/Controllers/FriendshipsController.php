@@ -4,22 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Models\Friendship;
 use App\User;
+use Illuminate\Http\Request;
 
 class FriendshipsController extends Controller
 {
-    public function store(User $recipient)
+    public function store(Request $request, User $recipient)
     {
         if (auth()->id() === $recipient->id) {
             abort(400);
         }
-        $friendship = Friendship::firstOrCreate([
-            'sender_id' => auth()->id(),
-            'recipient_id' => $recipient->id,
-            'status' => 'pending'
-        ]);
+        $friendship = $request->user()->sendFriendRequestTo($recipient);
 
         return response()->json([
-            'friendship_status' => $friendship->fresh()->status
+            'friendship_status' => $friendship->fresh()->status,
         ]);
     }
 
@@ -29,11 +26,11 @@ class FriendshipsController extends Controller
 
         if ($friendship->status === 'denied' && (int) $friendship->sender_id === auth()->id()) {
             return response()->json([
-                'friendship_status' => 'denied'
+                'friendship_status' => 'denied',
             ]);
         }
         return response()->json([
-            'friendship_status' => $friendship->delete() ? 'deleted' : ''
+            'friendship_status' => $friendship->delete() ? 'deleted' : '',
         ]);
     }
 
