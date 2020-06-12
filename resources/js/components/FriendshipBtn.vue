@@ -11,15 +11,17 @@
                 type: Object,
                 required: true
             },
-            friendshipStatus: {
-                type: String,
-                required: true
-            }
         },
         data() {
             return {
-                localFriendshipStatus: this.friendshipStatus
+                friendshipStatus: ''
             }
+        },
+        created() {
+            axios.get(`/friendships/${this.recipient.name}`)
+            .then(res=>{
+                this.friendshipStatus=res.data.friendship_status
+            })
         },
         methods: {
             toggleFriendshipStatus() {
@@ -29,14 +31,14 @@
 
                 axios[method](`friendships/${this.recipient.name}`)
                     .then(res => {
-                        this.localFriendshipStatus = res.data.friendship_status;
+                        this.friendshipStatus = res.data.friendship_status;
                     })
                     .catch(error => {
                         console.log(error.response.data);
                     })
             },
             getMethod() {
-                if (this.localFriendshipStatus === 'pending' || this.localFriendshipStatus === 'accepted') {
+                if (this.friendshipStatus === 'pending' || this.friendshipStatus === 'accepted') {
                     return 'delete';
                 }
                 return 'post'
@@ -44,11 +46,11 @@
         },
         computed: {
             getText() {
-                if (this.localFriendshipStatus === 'pending') {
+                if (this.friendshipStatus === 'pending') {
                     return 'Cancelar solicitud';
-                } else if (this.localFriendshipStatus === 'accepted') {
+                } else if (this.friendshipStatus === 'accepted') {
                     return 'Eliminar de mis amigos';
-                } else if (this.localFriendshipStatus === 'denied') {
+                } else if (this.friendshipStatus === 'denied') {
                     return 'Solicitud denegada';
                 }
                 return 'Solicitar amistad';
